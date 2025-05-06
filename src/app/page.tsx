@@ -19,9 +19,19 @@ const slugify = (text: string) => {
     .replace(/-+/g, '-'); // Replace multiple hyphens with one
 }
 
+async function getProducts(): Promise<Product[]> {
+  const res = await fetch('https://fakestoreapi.com/products', {
+    // Ensures SSR re-fetches every time (disable caching)
+    cache: 'no-store',
+  });
+
+  if (!res.ok) throw new Error('Failed to fetch products');
+
+  return res.json();
+}
+
 export default async function HomePage() {
-  const res = await fetch('https://fakestoreapi.com/products')
-  const products: Product[] = await res.json()
+  const products = await getProducts();
   const categories = Array.from(new Set(products.map(product => product.category)))
 
   return (
