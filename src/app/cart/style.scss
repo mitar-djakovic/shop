@@ -1,46 +1,68 @@
 .cart-page {
   padding: 20px;
   font-family: Arial, sans-serif;
-}
 
-.cart-items {
-  list-style-type: none;
-  padding: 0;
-}
+  .cart-items {
+    list-style-type: none;
+    padding: 0;
 
-.cart-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
+    .cart-item {
+      position: relative; // Needed for absolutely positioning the remove button
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      justify-content: space-between;
 
-.cart-item-image {
-  margin-right: 15px;
-}
+      .remove-button {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #888;
 
-.cart-item-details h2 {
-  margin: 0;
-  font-size: 18px;
-}
+        &:hover {
+          color: #e00;
+        }
+      }
 
-.cart-item-details p {
-  margin: 5px 0;
-}
+      button {
+        padding: 10px;
+        margin: 0 10px;
+      }
 
-.cart-item-details {
-  flex-grow: 1;
-}
+      .cart-item-image {
+        margin-right: 15px;
+      }
 
-.cart-footer {
-  margin-top: 20px;
-  text-align: center;
-}
+      .cart-item-details {
+        flex-grow: 1;
 
-.back-to-home {
-  font-size: 16px;
-  text-decoration: underline;
-  color: #0070f3;
+        h2 {
+          margin: 0;
+          font-size: 18px;
+        }
+
+        p {
+          margin: 5px 0;
+        }
+      }
+    }
+  }
+
+  .cart-footer {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .back-to-home {
+    font-size: 16px;
+    text-decoration: underline;
+    color: #0070f3;
+  }
 }

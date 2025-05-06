@@ -7,7 +7,7 @@ type Product = {
   title: string;
   price: number;
   image: string;
-  quantity: number; // Quantity of the product in the cart
+  quantity: number;
 };
 
 type CartItem = {
@@ -18,13 +18,13 @@ type CartItem = {
 // Helper function to fetch the cart data
 async function getCart(): Promise<CartItem[]> {
   const res = await fetch('https://fakestoreapi.com/carts/1', {
-    cache: 'no-store', // Ensures SSR re-fetches every time (disable caching)
+    cache: 'no-store',
   });
 
   if (!res.ok) throw new Error('Failed to fetch cart');
 
   const cartData = await res.json();
-  return cartData.products; // Returns array of productId and quantity
+  return cartData.products;
 }
 
 // Helper function to fetch product details by productId
@@ -35,9 +35,8 @@ async function getProductById(productId: number): Promise<Product> {
 }
 
 export default async function CartPage() {
-  const cartItems = await getCart(); // Fetch the cart data (productId and quantity)
+  const cartItems = await getCart();
 
-  // Fetch the product details for each cart item
   const products = await Promise.all(
     cartItems.map(async (cartItem) => {
       const product = await getProductById(cartItem.productId);
@@ -45,7 +44,6 @@ export default async function CartPage() {
     })
   );
 
-  // Calculate total price
   const totalPrice = products.reduce(
     (acc, product) => acc + product.price * product.quantity,
     0
@@ -58,19 +56,26 @@ export default async function CartPage() {
         <ul className="cart-items">
           {products.map((product) => (
             <li key={product.id} className="cart-item">
-              <div className="cart-item-image">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  width={50}
-                  height={50}
-                />
+              <button className="remove-button" title="Remove item">🗑️</button>
+              <div className="cart-item-content">
+                <div className="cart-item-image">
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    width={50}
+                    height={50}
+                  />
+                </div>
+                <div className="cart-item-details">
+                  <h2>{product.title}</h2>
+                  <p>Price: ${product.price}</p>
+                  <p>Quantity: {product.quantity}</p>
+                  <p>Total: ${(product.price * product.quantity).toFixed(2)}</p>
+                </div>
               </div>
-              <div className="cart-item-details">
-                <h2>{product.title}</h2>
-                <p>Price: ${product.price}</p>
-                <p>Quantity: {product.quantity}</p>
-                <p>Total: ${(product.price * product.quantity).toFixed(2)}</p>
+              <div>
+                <button>+</button>
+                <button>-</button>
               </div>
             </li>
           ))}
