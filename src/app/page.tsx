@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import './page.scss';
-import Header from "../components/Header";
 
 type Product = {
   id: number
@@ -36,7 +35,6 @@ export default async function HomePage() {
 
   return (
     <div className="main-page">
-      <Header />
       <h1>Product Categories</h1>
       <div className="category-list">
         {categories.map((category) => (

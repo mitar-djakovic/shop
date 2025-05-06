@@ -1,6 +1,5 @@
 import './style.scss';
 import Image from 'next/image';
-import Header from "@/components/Header";
 
 type Product = {
   id: number;
@@ -39,7 +38,6 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 
   return (
     <div className="category-page">
-      <Header />
       <h1 className="category-title">{category}</h1>
       <div className="product-list">
         {filtered.map((product) => (
