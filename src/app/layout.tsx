@@ -32,13 +32,13 @@ async function getCart() {
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const cart = await getCart();
-  console.log('cart--->',cart);
+  const { products } = await getCart();
+
   return (
     <html lang="en">
       <body>
         <div className="page-container">
-          <Header />
+          <Header itemCount={products.length} />
           <main className="page-content">{children}</main>
         </div>
       </body>
