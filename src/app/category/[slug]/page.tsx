@@ -1,5 +1,5 @@
-import './style.scss';
 import Image from 'next/image';
+import './style.scss';
 
 type Product = {
   id: number;

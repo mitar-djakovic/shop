@@ -8,12 +8,12 @@ type Product = {
   price: number;
   image: string;
   quantity: number; // Quantity of the product in the cart
-}
+};
 
 type CartItem = {
   productId: number;
   quantity: number;
-}
+};
 
 // Helper function to fetch the cart data
 async function getCart(): Promise<CartItem[]> {
@@ -45,6 +45,12 @@ export default async function CartPage() {
     })
   );
 
+  // Calculate total price
+  const totalPrice = products.reduce(
+    (acc, product) => acc + product.price * product.quantity,
+    0
+  );
+
   return (
     <div className="cart-page">
       <h1>Your Cart</h1>
@@ -73,6 +79,7 @@ export default async function CartPage() {
         <p>Your cart is empty.</p>
       )}
       <div className="cart-footer">
+        <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
         <Link href="/" className="back-to-home">Back to Home</Link>
       </div>
     </div>
