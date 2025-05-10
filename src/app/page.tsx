@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import './page.scss';
 
 type Product = {
@@ -20,31 +21,47 @@ const slugify = (text: string) => {
 
 async function getProducts(): Promise<Product[]> {
   const res = await fetch('https://fakestoreapi.com/products', {
-    // Ensures SSR re-fetches every time (disable caching)
-    cache: 'no-store',
+    next: {
+      revalidate: 3600, // Revalidate every hour since categories don't change often
+    },
   });
 
-  if (!res.ok) throw new Error('Failed to fetch products');
+  if (!res.ok) {
+    if (res.status === 404) {
+      notFound();
+    }
+    throw new Error('Failed to fetch products');
+  }
 
   return res.json();
 }
 
 export default async function HomePage() {
-  const products = await getProducts();
-  const categories = Array.from(new Set(products.map(product => product.category)))
+  try {
+    const products = await getProducts();
+    const categories = Array.from(new Set(products.map(product => product.category)));
 
-  return (
-    <div className="main-page">
-      <h1>Product Categories</h1>
-      <div className="category-list">
-        {categories.map((category) => (
-          <div key={category} className="category-card">
-            <Link href={`/category/${slugify(category)}`}>
-              <h3>{category}</h3>
-            </Link>
-          </div>
-        ))}
+    return (
+      <div className="main-page">
+        <h1>Product Categories</h1>
+        <div className="category-list">
+          {categories.map((category) => (
+            <div key={category} className="category-card">
+              <Link href={`/category/${slugify(category)}`}>
+                <h3>{category}</h3>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  )
+    );
+  } catch (error) {
+    console.error('Error loading categories:', error);
+    return (
+      <div className="main-page">
+        <h1>Error Loading Categories</h1>
+        <p>Sorry, there was an error loading the categories. Please try again later.</p>
+      </div>
+    );
+  }
 }
