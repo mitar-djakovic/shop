@@ -97,21 +97,21 @@ export default async function CartPage() {
                   <div className="cart-item-details">
                     <h2>{product.title}</h2>
                     <p>Price: ${product.price}</p>
-                    <p>Quantity: {product.quantity}</p>
+                    <div className="quantity-controls">
+                      <form action={decrementFormAction} className="quantity-form">
+                        <input type="hidden" name="productId" value={product.id} />
+                        <input type="hidden" name="currentQuantity" value={product.quantity} />
+                        <button type="submit" className="quantity-button" disabled={product.quantity <= 1}>-</button>
+                      </form>
+                      <span className="quantity-display">{product.quantity}</span>
+                      <form action={incrementFormAction} className="quantity-form">
+                        <input type="hidden" name="productId" value={product.id} />
+                        <input type="hidden" name="currentQuantity" value={product.quantity} />
+                        <button type="submit" className="quantity-button">+</button>
+                      </form>
+                    </div>
                     <p>Total: ${(product.price * product.quantity).toFixed(2)}</p>
                   </div>
-                </div>
-                <div>
-                  <form action={incrementFormAction}>
-                    <input type="hidden" name="productId" value={product.id} />
-                    <input type="hidden" name="currentQuantity" value={product.quantity} />
-                    <button type="submit">+</button>
-                  </form>
-                  <form action={decrementFormAction}>
-                    <input type="hidden" name="productId" value={product.id} />
-                    <input type="hidden" name="currentQuantity" value={product.quantity} />
-                    <button type="submit">-</button>
-                  </form>
                 </div>
               </li>
             ))}

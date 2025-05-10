@@ -9,6 +9,8 @@ export async function updateCartItem(productId: number, newQuantity: number) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      id: 1,
+      userId: 0,
       products: [{ productId, quantity: newQuantity }]
     }),
   });
