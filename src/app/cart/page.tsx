@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import './style.scss';
+import { incrementFormAction, decrementFormAction } from './actions';
 
 type Product = {
   id: number;
@@ -90,7 +91,7 @@ export default async function CartPage() {
                       alt={product.title}
                       width={50}
                       height={50}
-                      priority={true} // Prioritize loading of visible images
+                      priority={true}
                     />
                   </div>
                   <div className="cart-item-details">
@@ -101,8 +102,16 @@ export default async function CartPage() {
                   </div>
                 </div>
                 <div>
-                  <button>+</button>
-                  <button>-</button>
+                  <form action={incrementFormAction}>
+                    <input type="hidden" name="productId" value={product.id} />
+                    <input type="hidden" name="currentQuantity" value={product.quantity} />
+                    <button type="submit">+</button>
+                  </form>
+                  <form action={decrementFormAction}>
+                    <input type="hidden" name="productId" value={product.id} />
+                    <input type="hidden" name="currentQuantity" value={product.quantity} />
+                    <button type="submit">-</button>
+                  </form>
                 </div>
               </li>
             ))}
